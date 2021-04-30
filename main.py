@@ -34,7 +34,7 @@ def analyse_graph():
     # filter routes based on number connections more than 5
     routes_us_g = routes_us_g[routes_us_g['counts'] > 3]
     # pass this dataframe to draw the network graph of connectivities
-    draw_graph(routes_us_g)
+    # draw_graph(routes_us_g)
     # calculate and show centralities(Closeness, Betweenness)
     show_centrality(routes_us_g)
 
@@ -81,7 +81,9 @@ def draw_graph(data):
     plt.title("Connections between Airports(US))")
     # 5. Tell matplotlib to show it
     plt.show()
-    plt.savefig('routes_us.png')
+    # plt.savefig('routes_us.png')
+    # plt.savefig('routes_us.eps', format='eps')
+    # plt.savefig('myimage.png', format='svg', dpi=1200)
 
 
 def show_centrality(data):
@@ -89,14 +91,43 @@ def show_centrality(data):
     g = nx.from_pandas_edgelist(data, source='departure_airport_iata', target='arrival_airport_iata')
     # calculate degree centrality
     deg_cen = nx.degree_centrality(g)
-    print(deg_cen)
+    data_deg_cen = pd.DataFrame(deg_cen.items())
+    # print(data)
+    data_deg_cen = data_deg_cen[data_deg_cen[1] > 0.05]
+    # data_sorted = data.sort_values(by=data[0])
+    # print(data_sorted)
+    plt.bar(data_deg_cen[0], data_deg_cen[1])
+    plt.xlabel('Airports')
+    plt.ylabel('Degree Centrality')
+    plt.show()
+
+    # print(deg_cen)
     # calculate closeness centrality
     cl_cen = nx.closeness_centrality(g)
-    print(cl_cen)
+    data_cl_cen = pd.DataFrame(cl_cen.items())
+    # print(data)
+    data_cl_cen = data_cl_cen[data_cl_cen[1] > 0.05]
+    # data_sorted = data.sort_values(by=data[0])
+    # print(data_sorted)
+    plt.bar(data_cl_cen[0], data_cl_cen[1])
+    plt.xlabel('Airports')
+    plt.ylabel('Closeness Centrality')
+    plt.show()
+
+    # print(cl_cen)
     # calculate betweenness centrality
     bet_cen = nx.betweenness_centrality(g)
-    print(bet_cen)
-    # test
+    data_bet_cen = pd.DataFrame(bet_cen.items())
+    # print(data)
+    data_bet_cen = data_bet_cen[data_bet_cen[1] > 0.05]
+    # data_sorted = data.sort_values(by=data[0])
+    # print(data_sorted)
+    plt.bar(data_bet_cen[0], data_bet_cen[1])
+    plt.xlabel('Airports')
+    plt.ylabel('Betweenness Centrality')
+    plt.show()
+    # print(bet_cen)
+
 
 
 # Press the green button in the gutter to run the script.
